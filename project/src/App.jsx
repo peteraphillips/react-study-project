@@ -10,6 +10,29 @@ const Button = (props) => (
   </button>
 )
 
+const Statistics = (props) => {
+
+  let total = (props.good + props.neutral + props.bad)
+  let average = (props.good - props.bad)/total
+  let percentage = (props.good/total)*100
+
+  if (total > 0) {
+    return (
+      <div>
+        <p>Total: {total}</p>
+        <p>Average: {average}</p>
+        <p>Percentage Positive: %{percentage}</p>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <p>No Feedback Given</p>
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -33,6 +56,7 @@ const App = () => {
         <Display rating="Good:" value={good} />
         <Display rating="Neutral:" value={neutral} />
         <Display rating="Bad:" value={bad} />
+        <Statistics good={good} neutral={neutral} bad={bad}/>
       </div>
     </div>
   )
