@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Header = () => <h1>Give Feedback</h1>
 
-const Display = props => <div>{props.value}</div>
+const Display = props => <div>{props.rating}{props.value}</div>
 
 const Button = (props) => (
   <button onClick={props.handleClick}>
@@ -23,12 +23,17 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Display value={good} />
-      <Button handleClick={() => setGood(good + 1)} text="good" />
-      <Display value={neutral} />
-      <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
-      <Display value={bad} />
-      <Button handleClick={() => setBad(bad + 1)} text="bad" />
+      <div>
+        <Button handleClick={() => setGood(good + 1)} text="good" />
+        <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
+        <Button handleClick={() => setBad(bad + 1)} text="bad" />
+      </div>
+      <div>
+        <h2>Statistics </h2>
+        <Display rating="Good:" value={good} />
+        <Display rating="Neutral:" value={neutral} />
+        <Display rating="Bad:" value={bad} />
+      </div>
     </div>
   )
 }
