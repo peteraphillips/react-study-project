@@ -9,9 +9,19 @@ const Button = (props) => {
 }
 
 const Votes = (props) => {
-  console.log(props.array)
   return (
     <p>Votes: {props.array[props.index]}</p>
+  )
+}
+
+const HighestRated = (props) => {
+
+  return (
+    <div>
+      <h2>Anecdote with most votes</h2>
+      <p>{props.anecdotes[props.highest]}</p>
+      <p>with {props.points[props.highest]} votes</p>
+    </div>
   )
 }
 
@@ -29,6 +39,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Uint8Array(8))
+  const [highest, setHighest] = useState(0)
 
   const randomize = (min, max) => {
       return Math.floor(Math.random()
@@ -39,17 +50,22 @@ const App = () => {
     const copy = [...array]
     copy[index] += 1
 
+    setHighest(array.indexOf(Math.max(...array)))
+
     return copy
   }
 
-
-
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <Votes array={points} index={selected} />
-      <Button handleClick={() => setPoints(vote(points, selected))} text="Vote" />
-      <Button handleClick={() => setSelected(randomize(1, anecdotes.length-1))} text="Randomize" />
+      <div>
+        <p>{anecdotes[selected]}</p>
+        <Votes array={points} index={selected} />
+        <Button handleClick={() => setPoints(vote(points, selected))} text="Vote" />
+        <Button handleClick={() => setSelected(randomize(1, anecdotes.length-1))} text="Randomize" />
+      </div>
+      <div>
+        <HighestRated anecdotes={anecdotes} highest={highest} points={points}/>
+      </div>
     </div>
   )
 }
