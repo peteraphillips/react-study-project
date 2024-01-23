@@ -8,6 +8,13 @@ const Button = (props) => {
   )
 }
 
+const Votes = (props) => {
+  console.log(props.array)
+  return (
+    <p>Votes: {props.array[props.index]}</p>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -21,16 +28,28 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Uint8Array(8))
 
   const randomize = (min, max) => {
       return Math.floor(Math.random()
           * (max - min + 1)) + min
   }
 
+  const vote = (array, index) => {
+    const copy = [...array]
+    copy[index] += 1
+
+    return copy
+  }
+
+
+
   return (
     <div>
-      {anecdotes[selected]}
-      <Button handleClick={() => setSelected(randomize(0, anecdotes.length))} text="Randomize" />
+      <p>{anecdotes[selected]}</p>
+      <Votes array={points} index={selected} />
+      <Button handleClick={() => setPoints(vote(points, selected))} text="Vote" />
+      <Button handleClick={() => setSelected(randomize(1, anecdotes.length-1))} text="Randomize" />
     </div>
   )
 }
