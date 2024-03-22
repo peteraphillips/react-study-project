@@ -26,7 +26,8 @@ Less logic = smaller, simpler functions
 Filter example:
 
 Array:
-`
+---
+```
 var animals = [
     {name: 'Fluffy', species: 'rabbit' },
     {name: 'Caro', species: 'dog' },
@@ -35,29 +36,38 @@ var animals = [
     {name: 'Ursula', species: 'cat' },
     {name: 'Jimmy', species: 'fish' },  
 ]
-`
+```
 
 Traditional way of filtering:
-`
+---
+```
 var dogs = []
 for (var i = 0; i < animals.length; i++) {
     if (animals[i].species === 'dog')
     dogs.push(animals[i])
 }
-`
+```
 
-Simplified useing the filter function:
-`
+Simplified using the filter function:
+---
+```
 var dogs = animals.filter(function(animal) {
     return animal.species === 'dog'
 })
-`
+```
 
 Simplified further:
-`
+---
+```
 var isFog = function(animal) {
     return animal.species === 'dogs'
 }
 
 var dogs = animals.filter(isDog)
-`
+```
+
+Reject Example:
+---
+```
+var otherAnimals = animals.reject(isDog)
+```
