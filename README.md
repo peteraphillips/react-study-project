@@ -21,15 +21,14 @@ var waffle = triple
 waffle(30)
 ```
 
-*Higher order functions* 
+Higher order functions
+---
 
-Less logic = smaller, simpler functions
+Less logic = smaller, simpler functions with less bugs
 
 Filter example:
----
 
-Array:
----
+*Array:*
 ```
 var animals = [
     {name: 'Fluffy', species: 'rabbit' },
@@ -37,12 +36,11 @@ var animals = [
     {name: 'Hamilton', species: 'dog' },
     {name: 'Harold', species: 'fish' },
     {name: 'Ursula', species: 'cat' },
-    {name: 'Jimmy', species: 'fish' },  
+    {name: 'Jimmy', species: 'fish' }
 ]
 ```
 
 Traditional way of filtering:
----
 ```
 var dogs = []
 for (var i = 0; i < animals.length; i++) {
@@ -52,7 +50,6 @@ for (var i = 0; i < animals.length; i++) {
 ```
 
 Simplified using the filter function:
----
 ```
 var dogs = animals.filter(function(animal) {
     return animal.species === 'dog'
@@ -60,7 +57,6 @@ var dogs = animals.filter(function(animal) {
 ```
 
 Simplified further:
----
 ```
 var isFog = function(animal) {
     return animal.species === 'dogs'
@@ -69,8 +65,51 @@ var isFog = function(animal) {
 var dogs = animals.filter(isDog)
 ```
 
-Reject Example:
----
+Reject example:
 ```
 var otherAnimals = animals.reject(isDog)
+```
+
+Map example:
+```
+var names = animals.map(function(animal) {
+    return animal.name
+})
+```
+
+Simplified using arrow functions:
+```
+var names = animals.map((animal) => animal.name)
+```
+
+Reduce example: 
+
+*Array:*
+```
+var orders = [
+    { amount: 250 },
+    { amount: 400 },
+    { amount: 100 },
+    { amount: 100 },    
+]
+```
+
+Traditional way:
+```
+var totalAmount = 0
+for (var i=0; i < orders.length; i++) {
+    totalAmount += orders[i].amount
+}
+```
+
+Simplified using reduce:
+```
+var totalAmount = orders.reduce(function(sum, order) {
+    return sum + order.amount
+}, 0)
+```
+
+Simplified using arrow functions:
+```
+var totalAmount = orders.reduce(function(sum, order) => return sum + order.amount, 0)
 ```
