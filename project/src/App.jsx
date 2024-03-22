@@ -17,7 +17,7 @@ const Statistics = (props) => {
 
   let total = (props.good + props.neutral + props.bad)
   let average = (props.good - props.bad)/total
-  let percentage = (props.good/total)*100
+  let percentage = ('% ' + (props.good/total)*100)
 
   if (total > 0) {
     return (
