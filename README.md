@@ -4,12 +4,14 @@ Study of React
 The contents of this repository are results of following the react study guide found here [title] https://fullstackopen.com/
 
 ## Additional Study 
+---
 
 ### Functional Programming
+---
 
 **FUNCTIONS ARE VALUES**
 
-`
+```
 var triple = function(x) {
     return x * 3
 }
@@ -17,13 +19,14 @@ var triple = function(x) {
 var waffle = triple
 
 waffle(30)
-`
+```
 
 *Higher order functions* 
 
 Less logic = smaller, simpler functions
 
 Filter example:
+---
 
 Array:
 ---
