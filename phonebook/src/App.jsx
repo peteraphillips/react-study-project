@@ -11,14 +11,21 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+  const exists = (value) => value.length > 0 ? true : false
+
   const addPerson = (event) => {
     event.preventDefault()
+
     const personObject = {
       name: newName
     }
 
-    setPersons(persons.concat(personObject))
+    exists(persons.filter(i => i.name === newName))
+    ? alert(`${newName} already exists`)
+    : setPersons(persons.concat(personObject))
+    
     setNewName('')
+
   }
 
   return (
