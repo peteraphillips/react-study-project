@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import contactService from './services/contacts'
 
 const Search = (props) => {
 
@@ -82,10 +83,14 @@ const PersonForm = (props) => {
 
     exists(persons.filter(i => i.name === newName))
     ? alert(`${newName} already exists`)
-    : setPersons(persons.concat(personObject))
+    : contactService
+      .create(personObject)
+      .then(returnedContact => {
+        setPersons(persons.concat(returnedContact))
+        setNewName('')
+        setNewNumber('')
+      })
     
-    setNewName('')
-    setNewNumber('')
   }
 
   return (
@@ -136,13 +141,11 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
 
   const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
+    contactService
+    .getAll()
+    .then(initialContacts => {
+      setPersons(initialContacts)
+    })
   }
   
   useEffect(hook, [])
