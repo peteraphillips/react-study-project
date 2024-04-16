@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import contactService from './services/contacts'
 
 const Search = (props) => {
@@ -114,31 +113,34 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = (props) => {
+const Delete = (props) => {
 
-  var persons = props.persons
+  const id = props.id
+  const setPersons = props.setPersons 
+  const persons = props.persons
+
+  const removeContact = (event) => {
+    event.preventDefault()
+
+    window.confirm("Are you sure you want to delete (name) (id)")
+    ? contactService
+        .remove(`${id}`)
+    : window.close()
+
+  }  
 
   return (
-    <div>
-    {persons.map(person => 
-        <div key={person.number}>
-        <p>
-            Name: {person.name}{' '}
-        </p>
-        <p>
-            Number: {person.number}
-        </p>
-        <hr/>
-        </div>
-    )}
-    </div>
+    <form>
+      <button onClick={removeContact}>X</button>
+    </form>
   )
 
 }
 
-const App = () => {
+const Persons = (props) => {
 
-  const [persons, setPersons] = useState([]) 
+  const persons = props.persons
+  const setPersons = props.setPersons
 
   const hook = () => {
     contactService
@@ -152,6 +154,28 @@ const App = () => {
 
   return (
     <div>
+    {persons.map(person => 
+        <div key={person.id}>
+        <p>
+            Name: {person.name}{' '}
+        </p>
+        <p>
+            Number: {person.number}
+        </p>
+        <Delete id={person.id} persons={persons} setPersons={setPersons}/>
+        <hr/>
+        </div>
+    )}
+    </div>
+  )
+}
+
+const App = () => {
+
+  const [persons, setPersons] = useState([]) 
+
+  return (
+    <div>
       <h2>Phonebook</h2>
 
       <Search persons={persons}/>    
@@ -160,7 +184,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={persons} />
+      <Persons persons={persons} setPersons={setPersons}/>
     </div>
   )
 }
