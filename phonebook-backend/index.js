@@ -70,6 +70,14 @@ app.post('/api/contacts', (request, response) => {
         return response.status(400).json({ 
         error: 'number missing' 
         })
+    } else if (contacts.filter(c => c.name === body.name).length > 0) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    } else if (contacts.filter(c => c.number === body.number).length > 0) {
+        return response.status(400).json({
+            error: 'number must be unique'
+        })
     }
 
     const contact = {
