@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useDrag } from 'react-dnd'
+import { ItemTypes } from './Constants'
 import contactService from './services/contacts'
+import Notification from './components/notification'
+
 
 const Search = (props) => {
 
@@ -80,8 +84,10 @@ const PersonForm = (props) => {
     number: newNumber
     }
 
+    
+
     exists(persons.filter(i => i.name === newName))
-    ? alert(`${newName} already exists`)
+    ? window.confirm(`${newName} already exists`)    
     : contactService
       .create(personObject)
       .then(returnedContact => {
@@ -173,10 +179,13 @@ const Persons = (props) => {
 const App = () => {
 
   const [persons, setPersons] = useState([]) 
+  const [errorMessage, setErrorMessage] = useState(null)
 
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={errorMessage} />
 
       <Search persons={persons}/>    
 
