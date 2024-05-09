@@ -45,6 +45,44 @@ app.get('/api/contacts/:id', (request, response) => {
     }
 })
 
+app.delete('/api/contacts/:id', (request, response) => {
+    const id = Number(request.params.id)
+    contacts = contacts.filter(contact => contact.id !== id)
+    
+    response.status(204).end()
+})
+
+const generateId = () => {
+    const maxId = contacts.length > 0
+      ? Math.max(...contacts.map(n => n.id))
+      : 0
+    return maxId + 1
+  }
+  
+app.post('/api/contacts', (request, response) => {
+    const body = request.body
+
+    if (!body.name) {
+        return response.status(400).json({ 
+        error: 'name missing' 
+        })
+    } else if (!body.number) {
+        return response.status(400).json({ 
+        error: 'number missing' 
+        })
+    }
+
+    const contact = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+
+    contacts = contacts.concat(contact)
+
+    response.json(contact)
+})
+
 app.get('/info', (request, response) => {
     const contactInfo = contacts.length
     const date = Date(Date.now())
