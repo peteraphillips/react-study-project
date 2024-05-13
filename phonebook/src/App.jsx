@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useDrag } from 'react-dnd'
-import { ItemTypes } from './Constants'
 import contactService from './services/contacts'
 import Notification from './components/notification'
 
@@ -121,14 +119,14 @@ const PersonForm = (props) => {
 
 const Delete = (props) => {
 
-  const id = props.id
-  const setPersons = props.setPersons 
-  const persons = props.persons
-
   const removeContact = (event) => {
     event.preventDefault()
 
-    window.confirm("Are you sure you want to delete (name) (id)")
+    const id = props.id
+    const person = props.persons.filter(person => person.id === id)
+    const name = person[0].name
+
+    window.confirm(`Are you sure you want to delete ${name}`)
     ? contactService
         .remove(`${id}`)
     : window.close()
