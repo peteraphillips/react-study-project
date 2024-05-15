@@ -106,14 +106,22 @@ app.post('/api/contacts', (request, response) => {
     })
 })
 
-app.get('/info', (request, response) => {
-    const contactInfo = contacts.length
-    const date = Date(Date.now())
-
-    const tempResponse = `Phonebook has info for ${contactInfo} people <br/> ${date}`
-
-    response.send(tempResponse)
+app.put('api/contacts/:id', (request, response, next) => {
+    Contact.findByIdAndUpdate(request.params.id)
+    .then(result => {
+        response.status(204).end()
+    })
+    .catch(error => next(error))
 })
+
+// app.get('/info', (request, response) => {
+//     const contactInfo = contacts.length
+//     const date = Date(Date.now())
+
+//     const tempResponse = `Phonebook has info for ${contactInfo} people <br/> ${date}`
+
+//     response.send(tempResponse)
+// })
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
