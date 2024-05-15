@@ -125,12 +125,19 @@ const Delete = (props) => {
     const id = props.id
     const person = props.persons.filter(person => person.id === id)
     const name = person[0].name
+    const setPersons = props.setPersons
+    
 
     window.confirm(`Are you sure you want to delete ${name}`)
     ? contactService
         .remove(`${id}`)
     : window.close()
 
+    contactService
+    .getAll()
+    .then(contacts => {
+      setPersons(contacts)
+    })
   }  
 
   return (
