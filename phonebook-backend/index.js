@@ -13,6 +13,21 @@ app.use(express.static('dist'))
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :body'))
 
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+  
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id'})
+    }
+
+    next(error)
+}
+
 // let contacts = [
 //     { 
 //       "id": 1,
@@ -112,7 +127,7 @@ app.put('api/contacts/:id', (request, response, next) => {
 
     const contact = {
         name: body.name,
-        number: body.number
+        number: body.number,
     }
 
     Contact.findByIdAndUpdate(request.params.id, contact, { new:true })
@@ -131,21 +146,8 @@ app.put('api/contacts/:id', (request, response, next) => {
 //     response.send(tempResponse)
 // })
 
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
-  }
   
 app.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
-
-    if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'malformatted id'})
-    }
-
-    next(error)
-}
 
 app.use(errorHandler)
 
