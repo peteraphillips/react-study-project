@@ -107,9 +107,16 @@ app.post('/api/contacts', (request, response) => {
 })
 
 app.put('api/contacts/:id', (request, response, next) => {
-    Contact.findByIdAndUpdate(request.params.id)
+    const body = request.body
+
+    const contact = {
+        name: body.name,
+        number: body.number
+    }
+
+    Contact.findByIdAndUpdate(request.params.id, contact, { new:true })
     .then(result => {
-        response.status(204).end()
+        response.json(updatedContact)
     })
     .catch(error => next(error))
 })
