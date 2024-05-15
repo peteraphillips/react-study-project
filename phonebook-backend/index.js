@@ -65,7 +65,7 @@ app.get('/api/contacts/:id', (request, response, next) => {
     Contact.findById(request.params.id)
         .then(contact => {
             if (contact) {
-                response.json(contact)
+                response.json(contact.toJSON())
             } else {
                 response.status(404).end()
             }
@@ -137,14 +137,19 @@ app.put('api/contacts/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-// app.get('/info', (request, response) => {
-//     const contactInfo = contacts.length
-//     const date = Date(Date.now())
+app.get('/info', (request, response) => {
+    const date = Date(Date.now())
 
-//     const tempResponse = `Phonebook has info for ${contactInfo} people <br/> ${date}`
+    Contact.find({}).then(contacts => {
 
-//     response.send(tempResponse)
-// })
+        const tempResponse = `Phonebook has info for ${contacts.length} people <br/> ${date}`
+    
+        response.send(tempResponse)
+    })
+    .catch(error => next(error))
+
+
+})
 
   
 app.use(unknownEndpoint)
