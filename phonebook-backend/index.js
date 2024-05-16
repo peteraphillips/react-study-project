@@ -112,7 +112,6 @@ app.get('/info', (request, response) => {
     })
     .catch(error => next(error))
 
-
 })
 
   
