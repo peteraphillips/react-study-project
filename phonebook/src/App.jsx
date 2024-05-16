@@ -61,8 +61,10 @@ const PersonForm = (props) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
-  var persons = props.persons
-  var setPersons = props.setPersons
+  const persons = props.persons
+  const setPersons = props.setPersons
+  const setErrorMessage = props.setErrorMessage
+  
 
   const handleNewName = (event) => {
     setNewName(event.target.value)
@@ -75,25 +77,35 @@ const PersonForm = (props) => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const exists = (value) => value.length > 0 ? true : false
-
     const personObject = {
     name: newName,
     number: newNumber
     }
 
-    
+    const exists = persons.filter(i => i.name === newName)
 
-    exists(persons.filter(i => i.name === newName))
-    ? window.confirm(`${newName} already exists`)    
-    : contactService
-      .create(personObject)
-      .then(returnedContact => {
-        setPersons(persons.concat(returnedContact))
+    exists.length > 0
+    ? contactService
+    .update(`${exists[0].id}`, personObject)
+    .then(contactService
+      .getAll()
+      .then(contacts => {
+        setPersons(contacts)
         setNewName('')
         setNewNumber('')
       })
-    
+    )
+    : contactService
+    .create(personObject)
+    .then(returnedContact => {
+      setPersons(persons.concat(returnedContact))
+      setNewName('')
+      setNewNumber('')
+    })
+    .catch(error => {
+      setErrorMessage(error.response.data.error)
+    })
+
   }
 
   return (
@@ -187,19 +199,19 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   return (
-    <div>
+    <main>
       <h2>Phonebook</h2>
 
       <Notification message={errorMessage} />
 
       <Search persons={persons}/>    
 
-      <PersonForm persons={persons} setPersons={setPersons}/>  
+      <PersonForm persons={persons} setPersons={setPersons} setErrorMessage={setErrorMessage} />  
 
       <h2>Numbers</h2>
 
       <Persons persons={persons} setPersons={setPersons}/>
-    </div>
+    </main>
   )
 }
 
