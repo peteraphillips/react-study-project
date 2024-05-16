@@ -81,7 +81,7 @@ app.post('/api/contacts', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.put('api/contacts/:id', (request, response, next) => {
+app.post('/api/contacts/:id', (request, response, next) => {
     const body = request.body
     console.log(request.params.id)
 
@@ -120,3 +120,4 @@ const PORT = process.env.PORT
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`)
 })
+
