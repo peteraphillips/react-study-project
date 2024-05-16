@@ -65,7 +65,7 @@ app.get('/api/contacts/:id', (request, response, next) => {
     Contact.findById(request.params.id)
         .then(contact => {
             if (contact) {
-                response.json(contact.toJSON())
+                response.json(contact)
             } else {
                 response.status(404).end()
             }
