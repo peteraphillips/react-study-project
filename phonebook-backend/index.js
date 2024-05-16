@@ -17,39 +17,17 @@ const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }
 
-  
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id'})
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
     }
 
     next(error)
 }
-
-// let contacts = [
-//     { 
-//       "id": 1,
-//       "name": "Arto Hellas", 
-//       "number": "040-123456"
-//     },
-//     { 
-//       "id": 2,
-//       "name": "Ada Lovelace", 
-//       "number": "39-44-5323523"
-//     },
-//     { 
-//       "id": 3,
-//       "name": "Dan Abramov", 
-//       "number": "12-43-234345"
-//     },
-//     { 
-//       "id": 4,
-//       "name": "Mary Poppendieck", 
-//       "number": "39-23-6423122"
-//     }
-// ]
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
@@ -89,27 +67,8 @@ const generateId = () => {
     return maxId + 1
   }
   
-app.post('/api/contacts', (request, response) => {
+app.post('/api/contacts', (request, response, next) => {
     const body = request.body
-
-    if (!body.name) {
-        return response.status(400).json({ 
-        error: 'name missing' 
-        })
-    } else if (!body.number) {
-        return response.status(400).json({ 
-        error: 'number missing' 
-        })
-    } 
-    // else if (contacts.filter(c => c.name === body.name).length > 0) {
-    //     return response.status(400).json({
-    //         error: 'name must be unique'
-    //     })
-    // } else if (contacts.filter(c => c.number === body.number).length > 0) {
-    //     return response.status(400).json({
-    //         error: 'number must be unique'
-    //     })
-    // }
 
     const contact = new Contact({
         name: body.name,
@@ -119,6 +78,7 @@ app.post('/api/contacts', (request, response) => {
     contact.save().then(savedContact => {
         response.json(savedContact)
     })
+    .catch(error => next(error))
 })
 
 app.put('api/contacts/:id', (request, response, next) => {
